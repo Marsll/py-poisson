@@ -26,4 +26,38 @@ def create_laplacian_1d(shape, h = 0.1):
     laplacian[0][-1] += 1
     laplacian[-1][0] += 1
     return laplacian
+
+def create_laplacian_2d(shape):
+    laplacian = np.zeros((*shape, *shape))
+    for k in range(0, shape[0]):
+        for l in range(0, shape[1]):
+            laplacian[k,l,k,l] = -4
+            laplacian[(k+1) % shape[0],l,k,l] = 1
+            laplacian[k-1,l,k,l] = 1
+            laplacian[k,(l+1) % shape[1],k,l] = 1
+            laplacian[k,l-1,k,l] = 1
+    laplacian = np.reshape(laplacian, (shape[0]*shape[1], shape[0]*shape[1]) )               
+    return laplacian
+
+#np.set_printoptions(threshold=np.inf)
+#print(create_laplacian_2d((3,4)))
+
+def create_laplacian_3d(shape):
+    laplacian = np.zeros((*shape, *shape))
+    for k in range(0, shape[0]):
+        for l in range(0, shape[1]):
+            for m in range(0, shape[2]):
+                laplacian[k,l,m,k,l,m] = -4
+                laplacian[(k+1) % shape[0],l,m,k,l,m] = 1
+                laplacian[k-1,l,m,k,l,m] = 1
+                laplacian[k,(l+1) % shape[1],m,k,l,m] = 1
+                laplacian[k,l-1,m,k,l,m] = 1
+                laplacian[k,l,(m+1) % shape[1],k,l,m] = 1
+                laplacian[k,l,(m-1),k,l,m] = 1
+    laplacian = np.reshape(laplacian, (shape[0] * shape[1] * shape[2], shape[0]*shape[1]*shape[2]))               
+    return laplacian
+ 
+np.set_printoptions(threshold=np.inf)
+print(create_laplacian_3d((3,3,3)))
+
     
