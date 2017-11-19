@@ -69,10 +69,19 @@ def create_laplacian_3d(shape, h=[0.1, 0.1, 0.1]):
 # print(create_laplacian_3d((3,3,3)))
 def create_laplacian(shape, h):
     if len(h) == 1:
-        create_laplacian_1d(shape, h)
+        return create_laplacian_1d(shape, h)
     elif len(h) == 2:
-        create_laplacian_2d(shape, h)
+        return create_laplacian_2d(shape, h)
     elif len(h) == 3:
-        create_laplacian_3d(shape, h)
+        return create_laplacian_3d(shape, h)
     else:
         print("fail!")
+
+
+def solve(rho, epsilon=0.1, h=[0.1, 0.2]):
+    laplacian = create_laplacian(rho.shape, h)
+    shape = np.asarray(rho.shape)
+    rho_ = np.reshape(rho, np.prod(shape))
+    print(laplacian.shape, rho_.shape)
+    phi = np.linalg.solve(laplacian, - rho_ / epsilon)
+    return np.reshape(phi, rho.shape)
